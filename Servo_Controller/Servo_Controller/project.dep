@@ -1,0 +1,39 @@
+# DO NOT DELETE
+./obj/boot.o : \
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8ssc.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\lib\GLOBAL~1.INC\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./obj/main.o :  ./lib/Motor1.h ./lib/Motor2.h ./lib/Motor3.h\
+   ./lib/PSoCAPI.h ./lib/UART.h\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.h
+./lib/obj/motor1.o :  ./lib/Motor1.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/motor1int.o :  ./lib/Motor1.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/motor2.o :  ./lib/Motor2.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/motor2int.o :  ./lib/Motor2.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/motor3.o :  ./lib/Motor3.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/motor3int.o :  ./lib/Motor3.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/psocconfig.o :  ./lib/GLOBAL~1.INC\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/psocconfigtbl.o : \
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc
+./lib/obj/uart.o :  ./lib/UART.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/uartint.o :  ./lib/UART.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./lib/obj/uartplus.o : 

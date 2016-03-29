@@ -1,0 +1,677 @@
+ 0000                   cpu LMM
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile ./main.c
+                        .area data(ram, con, rel)
+ 0000                   .dbfile ./main.c
+ 0000           _pw1::
+ 0000 03E7              .word 999
+ 0002                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+ 0002                   .dbsym e pw1 _pw1 I
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+ 0000           _pw2::
+ 0000 05DB              .word 1499
+ 0002                   .dbsym e pw2 _pw2 I
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+ 0000           _pw3::
+ 0000 07CF              .word 1999
+ 0002                   .dbsym e pw3 _pw3 I
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+ 0000           _motor::
+ 0000 0001              .word 1
+ 0002                   .dbsym e motor _motor I
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+ 0000                   .dbfunc e main _main fV
+ 0000           ;         strPtr -> X+0
+ 0000           _main::
+ 0000                   .dbline -1
+ 0000 10                push X
+ 0001 4F                mov X,SP
+ 0002 3802              add SP,2
+ 0004                   .dbline 17
+ 0004           ; //----------------------------------------------------------------------------
+ 0004           ; // C main line
+ 0004           ; //----------------------------------------------------------------------------
+ 0004           ; 
+ 0004           ; #include <m8c.h>        // part specific constants and macros
+ 0004           ; #include "PSoCAPI.h"    // PSoC API definitions for all User Modules
+ 0004           ; 
+ 0004           ; int j;
+ 0004           ; int pw1 = 999;
+ 0004           ; int pw2 = 1499;
+ 0004           ; int pw3 = 1999;
+ 0004           ; int motor = 1;
+ 0004           ; 
+ 0004           ; int convert(char* c);
+ 0004           ; 
+ 0004           ; void main(void)
+ 0004           ; {
+ 0004                   .dbline 21
+ 0004           ;       char * strPtr;                        // Parameter pointer
+ 0004           ;         
+ 0004           ;   
+ 0004           ;       UART_CmdReset();                            // Turn on baud rate generator       
+ 0004 10                push X
+ 0005 7C0000            xcall _UART_CmdReset
+ 0008 20                pop X
+ 0009                   .dbline 22
+ 0009           ;       UART_IntCntl(UART_ENABLE_RX_INT);     // Enable RX interrupts  
+ 0009 10                push X
+ 000A 5001              mov A,1
+ 000C 7C0000            xcall _UART_IntCntl
+ 000F 20                pop X
+ 0010                   .dbline 23
+ 0010           ;       UART_Start(UART_PARITY_NONE);         // Enable UART  
+ 0010 10                push X
+ 0011 5000              mov A,0
+ 0013 7C0000            xcall _UART_Start
+ 0016 20                pop X
+ 0017                   .dbline 25
+ 0017           ;       
+ 0017           ;       M8C_EnableGInt ;                      // Turn on interrupts  
+ 0017 7101                      or  F, 01h
+ 0019           
+ 0019                   .dbline 32
+ 0019           ;       
+ 0019           ;       
+ 0019           ;       //Motor1_DisableInt();
+ 0019           ;       //Motor2_DisableInt();
+ 0019           ;       //Motor3_DisableInt();
+ 0019           ;               
+ 0019           ;       Motor1_Start();
+ 0019 10                push X
+ 001A 7C0000            xcall _Motor1_Start
+ 001D                   .dbline 33
+ 001D           ;       Motor2_Start();
+ 001D 7C0000            xcall _Motor2_Start
+ 0020                   .dbline 34
+ 0020           ;       Motor3_Start();
+ 0020 7C0000            xcall _Motor3_Start
+ 0023 20                pop X
+ 0024                   .dbline 37
+ 0024           ;       
+ 0024           ;       //for(j = 0; j < 10000; j++);
+ 0024           ;       UART_CPutString("\r\nServo controller intitiated.\r\n");  
+ 0024 10                push X
+ 0025 502D              mov A,>L2
+ 0027 08                push A
+ 0028 502D              mov A,<L2
+ 002A 5C                mov X,A
+ 002B 18                pop A
+ 002C 7C0000            xcall _UART_CPutString
+ 002F 20                pop X
+ 0030 813D              xjmp L4
+ 0032           L3:
+ 0032                   .dbline 40
+ 0032           ;       
+ 0032           ;       while (TRUE)
+ 0032           ;       {
+ 0032                   .dbline 42
+ 0032           ;               
+ 0032           ;               if(UART_bCmdCheck()) 
+ 0032 10                push X
+ 0033 7C0000            xcall _UART_bCmdCheck
+ 0036 62D000            mov REG[0xd0],>__r0
+ 0039 20                pop X
+ 003A 3900              cmp A,0
+ 003C A131              jz L6
+ 003E                   .dbline 43
+ 003E           ;               {                    // Wait for command    
+ 003E                   .dbline 44
+ 003E           ;                       if(strPtr = UART_szGetParam()) 
+ 003E 10                push X
+ 003F 7C0000            xcall _UART_szGetParam
+ 0042 62D000            mov REG[0xd0],>__r0
+ 0045 5300              mov [__r0],A
+ 0047 5A00              mov [__r1],X
+ 0049 20                pop X
+ 004A 5100              mov A,[__r1]
+ 004C 5401              mov [X+1],A
+ 004E 5100              mov A,[__r0]
+ 0050 5400              mov [X+0],A
+ 0052 3C0000            cmp [__r0],0
+ 0055 B006              jnz X1
+ 0057 3C0000            cmp [__r1],0
+ 005A A10E              jz L8
+ 005C           X1:
+ 005C                   .dbline 45
+ 005C           ;                       {  
+ 005C                   .dbline 46
+ 005C           ;                               j = 0;// More than delimiter?  
+ 005C 62D000            mov REG[0xd0],>_j
+ 005F 550100            mov [_j+1],0
+ 0062 550000            mov [_j],0
+ 0065                   .dbline 47
+ 0065           ;                               UART_CPutString("Motor angles (1, 2, 3): \r\nValues\r\n<"); 
+ 0065 10                push X
+ 0066 5009              mov A,>L10
+ 0068 08                push A
+ 0069 5009              mov A,<L10
+ 006B 5C                mov X,A
+ 006C 18                pop A
+ 006D 7C0000            xcall _UART_CPutString
+ 0070 20                pop X
+ 0071                   .dbline 48
+ 0071           ;                               pw1 = convert(strPtr);  
+ 0071 5200              mov A,[X+0]
+ 0073 08                push A
+ 0074 5201              mov A,[X+1]
+ 0076 08                push A
+ 0077 90FC              xcall _convert
+ 0079 38FE              add SP,-2
+ 007B 62D000            mov REG[0xd0],>__r0
+ 007E 5100              mov A,[__r1]
+ 0080 08                push A
+ 0081 5100              mov A,[__r0]
+ 0083 62D000            mov REG[0xd0],>_pw1
+ 0086 5300              mov [_pw1],A
+ 0088 18                pop A
+ 0089 5301              mov [_pw1+1],A
+ 008B                   .dbline 49
+ 008B           ;                               UART_PutString(strPtr);             // Print out command
+ 008B 10                push X
+ 008C 5200              mov A,[X+0]
+ 008E 08                push A
+ 008F 5201              mov A,[X+1]
+ 0091 5C                mov X,A
+ 0092 18                pop A
+ 0093 7C0000            xcall _UART_PutString
+ 0096 20                pop X
+ 0097                   .dbline 50
+ 0097           ;                               UART_CPutString(">\r\n");   
+ 0097 10                push X
+ 0098 5005              mov A,>L11
+ 009A 08                push A
+ 009B 5005              mov A,<L11
+ 009D 5C                mov X,A
+ 009E 18                pop A
+ 009F 7C0000            xcall _UART_CPutString
+ 00A2 20                pop X
+ 00A3 807D              xjmp L13
+ 00A5           L12:
+ 00A5                   .dbline 52
+ 00A5           ;                               while(strPtr = UART_szGetParam()) 
+ 00A5           ;                               { // loop on each parameter  
+ 00A5                   .dbline 53
+ 00A5           ;                                       if(j == 0)
+ 00A5 62D000            mov REG[0xd0],>_j
+ 00A8 3C0000            cmp [_j],0
+ 00AB B022              jnz L15
+ 00AD 3C0100            cmp [_j+1],0
+ 00B0 B01D              jnz L15
+ 00B2           X2:
+ 00B2                   .dbline 54
+ 00B2           ;                                               pw2 = convert(strPtr);
+ 00B2 5200              mov A,[X+0]
+ 00B4 08                push A
+ 00B5 5201              mov A,[X+1]
+ 00B7 08                push A
+ 00B8 90BB              xcall _convert
+ 00BA 38FE              add SP,-2
+ 00BC 62D000            mov REG[0xd0],>__r0
+ 00BF 5100              mov A,[__r1]
+ 00C1 08                push A
+ 00C2 5100              mov A,[__r0]
+ 00C4 62D000            mov REG[0xd0],>_pw2
+ 00C7 5300              mov [_pw2],A
+ 00C9 18                pop A
+ 00CA 5301              mov [_pw2+1],A
+ 00CC 8028              xjmp L16
+ 00CE           L15:
+ 00CE                   .dbline 55
+ 00CE           ;                                       else if(j == 1)
+ 00CE 62D000            mov REG[0xd0],>_j
+ 00D1 3C0000            cmp [_j],0
+ 00D4 B020              jnz L17
+ 00D6 3C0101            cmp [_j+1],1
+ 00D9 B01B              jnz L17
+ 00DB           X3:
+ 00DB                   .dbline 56
+ 00DB           ;                                               pw3 = convert(strPtr);
+ 00DB 5200              mov A,[X+0]
+ 00DD 08                push A
+ 00DE 5201              mov A,[X+1]
+ 00E0 08                push A
+ 00E1 9092              xcall _convert
+ 00E3 38FE              add SP,-2
+ 00E5 62D000            mov REG[0xd0],>__r0
+ 00E8 5100              mov A,[__r1]
+ 00EA 08                push A
+ 00EB 5100              mov A,[__r0]
+ 00ED 62D000            mov REG[0xd0],>_pw3
+ 00F0 5300              mov [_pw3],A
+ 00F2 18                pop A
+ 00F3 5301              mov [_pw3+1],A
+ 00F5           L17:
+ 00F5           L16:
+ 00F5                   .dbline 57
+ 00F5           ;                                       UART_CPutString("   <");    
+ 00F5 10                push X
+ 00F6 5000              mov A,>L19
+ 00F8 08                push A
+ 00F9 5000              mov A,<L19
+ 00FB 5C                mov X,A
+ 00FC 18                pop A
+ 00FD 7C0000            xcall _UART_CPutString
+ 0100 20                pop X
+ 0101                   .dbline 58
+ 0101           ;                                       UART_PutString(strPtr);          // Print each parameter    
+ 0101 10                push X
+ 0102 5200              mov A,[X+0]
+ 0104 08                push A
+ 0105 5201              mov A,[X+1]
+ 0107 5C                mov X,A
+ 0108 18                pop A
+ 0109 7C0000            xcall _UART_PutString
+ 010C 20                pop X
+ 010D                   .dbline 59
+ 010D           ;                                       UART_CPutString(">\r\n");  
+ 010D 10                push X
+ 010E 5005              mov A,>L11
+ 0110 08                push A
+ 0111 5005              mov A,<L11
+ 0113 5C                mov X,A
+ 0114 18                pop A
+ 0115 7C0000            xcall _UART_CPutString
+ 0118 20                pop X
+ 0119                   .dbline 60
+ 0119           ;                                       j++;
+ 0119 62D000            mov REG[0xd0],>_j
+ 011C 7601              inc [_j+1]
+ 011E 0E0000            adc [_j],0
+ 0121                   .dbline 61
+ 0121           ;                               }   
+ 0121           L13:
+ 0121                   .dbline 51
+ 0121 10                push X
+ 0122 7C0000            xcall _UART_szGetParam
+ 0125 62D000            mov REG[0xd0],>__r0
+ 0128 5300              mov [__r0],A
+ 012A 5A00              mov [__r1],X
+ 012C 20                pop X
+ 012D 5100              mov A,[__r1]
+ 012F 5401              mov [X+1],A
+ 0131 5100              mov A,[__r0]
+ 0133 5400              mov [X+0],A
+ 0135 3C0000            cmp [__r0],0
+ 0138 BF6C              jnz L12
+ 013A 3C0000            cmp [__r1],0
+ 013D BF67              jnz L12
+ 013F           X4:
+ 013F                   .dbline 64
+ 013F           ;                                       
+ 013F           ;                               
+ 013F           ;                               Motor1_WritePulseWidth(pw1);
+ 013F 10                push X
+ 0140 62D000            mov REG[0xd0],>_pw1
+ 0143 5100              mov A,[_pw1]
+ 0145 08                push A
+ 0146 5101              mov A,[_pw1+1]
+ 0148 20                pop X
+ 0149 7C0000            xcall _Motor1_WritePulseWidth
+ 014C 20                pop X
+ 014D                   .dbline 65
+ 014D           ;                               Motor2_WritePulseWidth(pw2);
+ 014D 10                push X
+ 014E 62D000            mov REG[0xd0],>_pw2
+ 0151 5100              mov A,[_pw2]
+ 0153 08                push A
+ 0154 5101              mov A,[_pw2+1]
+ 0156 20                pop X
+ 0157 7C0000            xcall _Motor2_WritePulseWidth
+ 015A 20                pop X
+ 015B                   .dbline 66
+ 015B           ;                               Motor3_WritePulseWidth(pw3);  
+ 015B 10                push X
+ 015C 62D000            mov REG[0xd0],>_pw3
+ 015F 5100              mov A,[_pw3]
+ 0161 08                push A
+ 0162 5101              mov A,[_pw3+1]
+ 0164 20                pop X
+ 0165 7C0000            xcall _Motor3_WritePulseWidth
+ 0168 20                pop X
+ 0169                   .dbline 67
+ 0169           ;                       }   
+ 0169           L8:
+ 0169                   .dbline 68
+ 0169           ;               UART_CmdReset();                          // Reset command buffer     
+ 0169 10                push X
+ 016A 7C0000            xcall _UART_CmdReset
+ 016D 20                pop X
+ 016E                   .dbline 69
+ 016E           ;       }  
+ 016E           L6:
+ 016E                   .dbline 71
+ 016E           ; 
+ 016E           ;       }
+ 016E           L4:
+ 016E                   .dbline 39
+ 016E 8EC3              xjmp L3
+ 0170           X0:
+ 0170                   .dbline -2
+ 0170           L1:
+ 0170 38FE              add SP,-2
+ 0172 20                pop X
+ 0173                   .dbline 0 ; func end
+ 0173 8FFF              jmp .
+ 0175                   .dbsym l strPtr 0 pc
+ 0175                   .dbend
+ 0175                   .dbfunc e convert _convert fI
+ 0175           ;          check -> X+4
+ 0175           ;         result -> X+2
+ 0175           ;              i -> X+0
+ 0175           ;              c -> X-5
+ 0175           _convert::
+ 0175                   .dbline -1
+ 0175 10                push X
+ 0176 4F                mov X,SP
+ 0177 3805              add SP,5
+ 0179                   .dbline 75
+ 0179           ; }
+ 0179           ; 
+ 0179           ; int convert(char* c)
+ 0179           ; {
+ 0179                   .dbline 76
+ 0179           ;       int result = 0;
+ 0179 560300            mov [X+3],0
+ 017C 560200            mov [X+2],0
+ 017F                   .dbline 77
+ 017F           ;       int i = 0;
+ 017F 560100            mov [X+1],0
+ 0182 560000            mov [X+0],0
+ 0185 80FC              xjmp L22
+ 0187           L21:
+ 0187                   .dbline 80
+ 0187           ;       char check;
+ 0187           ;       while(check = c[i])
+ 0187           ;       {
+ 0187                   .dbline 81
+ 0187           ;               if(i == 0)
+ 0187 3D0000            cmp [X+0],0
+ 018A B042              jnz L24
+ 018C 3D0100            cmp [X+1],0
+ 018F B03D              jnz L24
+ 0191           X5:
+ 0191                   .dbline 82
+ 0191           ;                       result += (((int)c[i]) - 48)*1000;
+ 0191 62D000            mov REG[0xd0],>__r0
+ 0194 5201              mov A,[X+1]
+ 0196 03FC              add A,[X-4]
+ 0198 5300              mov [__r1],A
+ 019A 5200              mov A,[X+0]
+ 019C 0BFB              adc A,[X-5]
+ 019E 60D4              mov REG[0xd4],A
+ 01A0 3E00              mvi A,[__r1]
+ 01A2 5300              mov [__r1],A
+ 01A4 5000              mov A,0
+ 01A6 08                push A
+ 01A7 5100              mov A,[__r1]
+ 01A9 08                push A
+ 01AA 5003              mov A,3
+ 01AC 08                push A
+ 01AD 50E8              mov A,-24
+ 01AF 08                push A
+ 01B0 7C0000            xcall __mul16
+ 01B3 38FC              add SP,-4
+ 01B5 5100              mov A,[__rX]
+ 01B7 5300              mov [__r1],A
+ 01B9 5100              mov A,[__rY]
+ 01BB 5300              mov [__r0],A
+ 01BD 160080            sub [__r1],-128
+ 01C0 1E00BB            sbb [__r0],-69
+ 01C3 5100              mov A,[__r1]
+ 01C5 0503              add [X+3],A
+ 01C7 5100              mov A,[__r0]
+ 01C9 0D02              adc [X+2],A
+ 01CB 80B1              xjmp L25
+ 01CD           L24:
+ 01CD                   .dbline 83
+ 01CD           ;               else if(i == 1)
+ 01CD 3D0000            cmp [X+0],0
+ 01D0 B042              jnz L26
+ 01D2 3D0101            cmp [X+1],1
+ 01D5 B03D              jnz L26
+ 01D7           X6:
+ 01D7                   .dbline 84
+ 01D7           ;                       result += (((int)c[i]) - 48)*100;
+ 01D7 62D000            mov REG[0xd0],>__r0
+ 01DA 5201              mov A,[X+1]
+ 01DC 03FC              add A,[X-4]
+ 01DE 5300              mov [__r1],A
+ 01E0 5200              mov A,[X+0]
+ 01E2 0BFB              adc A,[X-5]
+ 01E4 60D4              mov REG[0xd4],A
+ 01E6 3E00              mvi A,[__r1]
+ 01E8 5300              mov [__r1],A
+ 01EA 5000              mov A,0
+ 01EC 08                push A
+ 01ED 5100              mov A,[__r1]
+ 01EF 08                push A
+ 01F0 5000              mov A,0
+ 01F2 08                push A
+ 01F3 5064              mov A,100
+ 01F5 08                push A
+ 01F6 7C0000            xcall __mul16
+ 01F9 38FC              add SP,-4
+ 01FB 5100              mov A,[__rX]
+ 01FD 5300              mov [__r1],A
+ 01FF 5100              mov A,[__rY]
+ 0201 5300              mov [__r0],A
+ 0203 1600C0            sub [__r1],-64
+ 0206 1E0012            sbb [__r0],18
+ 0209 5100              mov A,[__r1]
+ 020B 0503              add [X+3],A
+ 020D 5100              mov A,[__r0]
+ 020F 0D02              adc [X+2],A
+ 0211 806B              xjmp L27
+ 0213           L26:
+ 0213                   .dbline 85
+ 0213           ;               else if(i == 2)
+ 0213 3D0000            cmp [X+0],0
+ 0216 B042              jnz L28
+ 0218 3D0102            cmp [X+1],2
+ 021B B03D              jnz L28
+ 021D           X7:
+ 021D                   .dbline 86
+ 021D           ;                       result += (((int)c[i]) - 48)*10;
+ 021D 62D000            mov REG[0xd0],>__r0
+ 0220 5201              mov A,[X+1]
+ 0222 03FC              add A,[X-4]
+ 0224 5300              mov [__r1],A
+ 0226 5200              mov A,[X+0]
+ 0228 0BFB              adc A,[X-5]
+ 022A 60D4              mov REG[0xd4],A
+ 022C 3E00              mvi A,[__r1]
+ 022E 5300              mov [__r1],A
+ 0230 5000              mov A,0
+ 0232 08                push A
+ 0233 5100              mov A,[__r1]
+ 0235 08                push A
+ 0236 5000              mov A,0
+ 0238 08                push A
+ 0239 500A              mov A,10
+ 023B 08                push A
+ 023C 7C0000            xcall __mul16
+ 023F 38FC              add SP,-4
+ 0241 5100              mov A,[__rX]
+ 0243 5300              mov [__r1],A
+ 0245 5100              mov A,[__rY]
+ 0247 5300              mov [__r0],A
+ 0249 1600E0            sub [__r1],-32
+ 024C 1E0001            sbb [__r0],1
+ 024F 5100              mov A,[__r1]
+ 0251 0503              add [X+3],A
+ 0253 5100              mov A,[__r0]
+ 0255 0D02              adc [X+2],A
+ 0257 8025              xjmp L29
+ 0259           L28:
+ 0259                   .dbline 88
+ 0259           ;               else
+ 0259           ;                       result += (((int)c[i]) - 48);
+ 0259 62D000            mov REG[0xd0],>__r0
+ 025C 5201              mov A,[X+1]
+ 025E 03FC              add A,[X-4]
+ 0260 5300              mov [__r1],A
+ 0262 5200              mov A,[X+0]
+ 0264 0BFB              adc A,[X-5]
+ 0266 60D4              mov REG[0xd4],A
+ 0268 3E00              mvi A,[__r1]
+ 026A 5300              mov [__r1],A
+ 026C 550000            mov [__r0],0
+ 026F 160030            sub [__r1],48
+ 0272 1E0000            sbb [__r0],0
+ 0275 5100              mov A,[__r1]
+ 0277 0503              add [X+3],A
+ 0279 5100              mov A,[__r0]
+ 027B 0D02              adc [X+2],A
+ 027D           L29:
+ 027D           L27:
+ 027D           L25:
+ 027D                   .dbline 90
+ 027D           ;                       
+ 027D           ;               i++;
+ 027D 7701              inc [X+1]
+ 027F 0F0000            adc [X+0],0
+ 0282                   .dbline 91
+ 0282           ;       }
+ 0282           L22:
+ 0282                   .dbline 79
+ 0282 62D000            mov REG[0xd0],>__r0
+ 0285 5201              mov A,[X+1]
+ 0287 03FC              add A,[X-4]
+ 0289 5300              mov [__r1],A
+ 028B 5200              mov A,[X+0]
+ 028D 0BFB              adc A,[X-5]
+ 028F 60D4              mov REG[0xd4],A
+ 0291 3E00              mvi A,[__r1]
+ 0293 5300              mov [__r0],A
+ 0295 5404              mov [X+4],A
+ 0297 3900              cmp A,0
+ 0299 BEED              jnz L21
+ 029B                   .dbline 92
+ 029B           ;       if (i == 1)
+ 029B 3D0000            cmp [X+0],0
+ 029E B022              jnz L30
+ 02A0 3D0101            cmp [X+1],1
+ 02A3 B01D              jnz L30
+ 02A5           X8:
+ 02A5                   .dbline 93
+ 02A5           ;               result = result/1000;
+ 02A5 5003              mov A,3
+ 02A7 08                push A
+ 02A8 50E8              mov A,-24
+ 02AA 08                push A
+ 02AB 5202              mov A,[X+2]
+ 02AD 08                push A
+ 02AE 5203              mov A,[X+3]
+ 02B0 08                push A
+ 02B1 62D000            mov REG[0xd0],>__r0
+ 02B4 7C0000            xcall __divmod_16X16_16
+ 02B7 18                pop A
+ 02B8 5403              mov [X+3],A
+ 02BA 18                pop A
+ 02BB 5402              mov [X+2],A
+ 02BD 38FE              add SP,-2
+ 02BF 804B              xjmp L31
+ 02C1           L30:
+ 02C1                   .dbline 94
+ 02C1           ;       else if (i == 2)
+ 02C1 3D0000            cmp [X+0],0
+ 02C4 B022              jnz L32
+ 02C6 3D0102            cmp [X+1],2
+ 02C9 B01D              jnz L32
+ 02CB           X9:
+ 02CB                   .dbline 95
+ 02CB           ;               result = result/100;
+ 02CB 5000              mov A,0
+ 02CD 08                push A
+ 02CE 5064              mov A,100
+ 02D0 08                push A
+ 02D1 5202              mov A,[X+2]
+ 02D3 08                push A
+ 02D4 5203              mov A,[X+3]
+ 02D6 08                push A
+ 02D7 62D000            mov REG[0xd0],>__r0
+ 02DA 7C0000            xcall __divmod_16X16_16
+ 02DD 18                pop A
+ 02DE 5403              mov [X+3],A
+ 02E0 18                pop A
+ 02E1 5402              mov [X+2],A
+ 02E3 38FE              add SP,-2
+ 02E5 8025              xjmp L33
+ 02E7           L32:
+ 02E7                   .dbline 96
+ 02E7           ;       else if (i == 3)
+ 02E7 3D0000            cmp [X+0],0
+ 02EA B020              jnz L34
+ 02EC 3D0103            cmp [X+1],3
+ 02EF B01B              jnz L34
+ 02F1           X10:
+ 02F1                   .dbline 97
+ 02F1           ;               result = result/10;
+ 02F1 5000              mov A,0
+ 02F3 08                push A
+ 02F4 500A              mov A,10
+ 02F6 08                push A
+ 02F7 5202              mov A,[X+2]
+ 02F9 08                push A
+ 02FA 5203              mov A,[X+3]
+ 02FC 08                push A
+ 02FD 62D000            mov REG[0xd0],>__r0
+ 0300 7C0000            xcall __divmod_16X16_16
+ 0303 18                pop A
+ 0304 5403              mov [X+3],A
+ 0306 18                pop A
+ 0307 5402              mov [X+2],A
+ 0309 38FE              add SP,-2
+ 030B           L34:
+ 030B           L33:
+ 030B           L31:
+ 030B                   .dbline 98
+ 030B           ;       return result;
+ 030B 62D000            mov REG[0xd0],>__r0
+ 030E 5203              mov A,[X+3]
+ 0310 5300              mov [__r1],A
+ 0312 5202              mov A,[X+2]
+ 0314 5300              mov [__r0],A
+ 0316                   .dbline -2
+ 0316           L20:
+ 0316 38FB              add SP,-5
+ 0318 20                pop X
+ 0319                   .dbline 0 ; func end
+ 0319 7F                ret
+ 031A                   .dbsym l check 4 c
+ 031A                   .dbsym l result 2 I
+ 031A                   .dbsym l i 0 I
+ 031A                   .dbsym l c -5 pc
+ 031A                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile E:\ECE491~1\SERVO_~1\SERVO_~1\main.c
+ 0000           _j::
+ 0000 0000              .byte 0,0
+ 0002                   .dbsym e j _j I
+                        .area lit(rom, con, rel)
+ 0000           L19:
+ 0000 2020203C00        .byte 32,32,32,60,0
+ 0005           L11:
+ 0005 3E0D0A00          .byte 62,13,10,0
+ 0009           L10:
+ 0009 4D6F746F7220616E676C65732028312C  .byte 'M,'o,'t,'o,'r,32,'a,'n,'g,'l,'e,'s,32,40,49,44
+ 0019 20322C2033293A200D0A56616C756573  .byte 32,50,44,32,51,41,58,32,13,10,'V,'a,'l,'u,'e,'s
+ 0029 0D0A3C00          .byte 13,10,60,0
+ 002D           L2:
+ 002D 0D0A536572766F20636F6E74726F6C6C  .byte 13,10,'S,'e,'r,'v,'o,32,'c,'o,'n,'t,'r,'o,'l,'l
+ 003D 657220696E74697469617465642E0D0A  .byte 'e,'r,32,'i,'n,'t,'i,'t,'i,'a,'t,'e,'d,46,13,10
+ 004D 00                .byte 0

@@ -1,0 +1,9 @@
+# DO NOT DELETE
+./obj/boot.o : \
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.inc\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8ssc.inc\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\lib\GLOBAL~1.INC\
+   E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc
+./obj/main.o :  ./lib/Motor1.h ./lib/Motor2.h ./lib/Motor3.h\
+   ./lib/PSoCAPI.h ./lib/UART.h\
+   C:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1/m8c.h

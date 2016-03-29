@@ -1,0 +1,12 @@
+-a -f project.dep -p./lib/obj/ -o.o -- -IC:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include -I./lib -IC:/PROGRA~1/Cypress/Common/CYPRES~3/tools/include/CY8C29~1 -- 
+lib/motor1.asm   
+lib/motor1int.asm   
+lib/motor2.asm   
+lib/motor2int.asm   
+lib/motor3.asm   
+lib/motor3int.asm   
+lib/psocconfig.asm   
+lib/psocconfigtbl.asm   
+lib/uart.asm   
+lib/uartint.asm   
+lib/uartplus.asm 

@@ -1,0 +1,31 @@
+Starting MAKE...
+creating project.mk 
+C:\PROGRA~1\Cypress\Common\CYPRES~3\tools\make: *** Warning: File `E:\ECE491~1\SERVO_~1\SERVO_~1\memory.inc' has modification time in the future (2014-11-06 16:24:26 > 2014-11-06 16:24:24)
+lib/motor1.asm
+lib/motor1int.asm
+lib/motor2.asm
+lib/motor2int.asm
+lib/motor3.asm
+lib/motor3int.asm
+lib/psocconfig.asm
+lib/psocconfigtbl.asm
+lib/uart.asm
+lib/uartint.asm
+lib/uartplus.asm
+./boot.asm
+./main.c
+Linking..
+LMM info: area 'InterruptRAM' uses 2 bytes in SRAM bank 0
+LMM info: area 'UART_RAM' item of 32 bytes allocated in SRAM page 0
+LMM info: area 'virtual_registers' uses 5 bytes in SRAM page 0
+LMM info: area 'data' item of 2 bytes allocated in SRAM page 0
+LMM info: area 'data' item of 2 bytes allocated in SRAM page 0
+LMM info: area 'data' item of 2 bytes allocated in SRAM page 0
+LMM info: area 'data' item of 2 bytes allocated in SRAM page 0
+LMM info: area 'data' item of 2 bytes allocated in SRAM page 0
+LMM info: area 'UART_RAM' item of 1 bytes allocated in SRAM page 0
+  ROM 8% full. 2503 out of 32768 bytes used (does not include absolute areas).
+  RAM 3% full. 50 bytes used (does not include stack usage).
+idata dump at output/Servo_Controller.idata
+ 
+Servo_Controller - 0 error(s) 1 warning(s) 16:24:37
